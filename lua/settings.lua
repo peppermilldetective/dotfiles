@@ -34,7 +34,6 @@ opt('o', 'mouse', 'nv')
 opt('o', 't_vb', '')
 opt('o', 'hidden', true)
 
-opt('o', 'background', 'dark')
 opt('o', 'termguicolors', true)
 opt('o', 'guifont', 'FiraCode Nerd Font:h10')
 opt('o', 'incsearch', true)
@@ -84,7 +83,7 @@ opt('w', 'nu', true)
 
 opt('w', 'signcolumn', 'yes')
 
-opt('w', 't_Co', '256')
+opt('w', 'term', 'xterm-256color')
 
 ---- Plugin settings?
 
