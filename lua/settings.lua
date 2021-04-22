@@ -29,7 +29,7 @@ opt('b', 'smartindent', true)
 opt('b', 'swapfile', true)
 
 -- global/"option" interface
-opt('o', 'mouse', 'nv')
+opt('o', 'mouse', 'a')
 
 opt('o', 't_vb', '')
 opt('o', 'hidden', true)
