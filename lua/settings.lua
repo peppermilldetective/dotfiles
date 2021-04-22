@@ -90,6 +90,8 @@ opt('w', 'term', 'xterm-256color')
 cmd 'let g:sandwich_no_default_key_mappings = 1'
 cmd 'let g:operator_sandwich_no_default_key_mappings = 1'
 
+cmd [[let g:gitgutter_git_executable = 'C:\Program Files\Git\bin\git.exe']]
+
 -- If using wildmenu, need to ignore some extra stuff
 
 if vim.fn.has('wildmenu') then
