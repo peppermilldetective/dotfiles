@@ -82,7 +82,7 @@ gls.left[3] = {
         condition = condition.check_git_workspace,
         separator = ' ',
         separator_highlight = {'NONE', colors.bg},
-        highlight = {colors.grey, colors.bg}
+        highlight = {colors.orange, colors.bg}
     }
 }
 
