@@ -105,8 +105,9 @@ return packer.startup(function()
     use 'junegunn/fzf.vim'
 
     use 'pechorin/any-jump.vim'
-
     use 'kyazdani42/nvim-tree.lua'
+
+    use 'psliwka/vim-smoothie'
 
     -- Formatting Plugins
 
