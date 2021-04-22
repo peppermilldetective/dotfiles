@@ -83,6 +83,15 @@ return packer.startup(function()
     use 'Yggdroot/indentLine'
     use 'lukas-reineke/indent-blankline.nvim'
 
+    use 'airblade/vim-gitgutter'
+    use 'mhinz/vim-signify'
+
+    use {
+        'glepnir/galaxyline.nvim',
+        branch = 'main',
+        requires = { 'kyazdani42/nvim-web-devicons' },
+    }
+
     -- LSP Plugins
 
     use 'neovim/nvim-lspconfig'
