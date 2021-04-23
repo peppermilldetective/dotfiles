@@ -107,8 +107,6 @@ return packer.startup(function()
     use 'pechorin/any-jump.vim'
     use 'kyazdani42/nvim-tree.lua'
 
-    use 'psliwka/vim-smoothie'
-
     -- Formatting Plugins
 
     use 'machakann/vim-sandwich'
