@@ -6,6 +6,9 @@ cmd 'au TextYankPost * lua vim.highlight.on_yank { on_visual = false }' -- disab
 -- rust-analyzer show inlay hints on new file
 cmd "au InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs lua require'lsp_extensions'.inlay_hints{}"
 
+-- nvim-tree auto open on vim start
+cmd "au VimEnter * NvimTreeOpen"
+
 -- nvim-compe setup
 
 require'compe'.setup {
@@ -20,7 +23,6 @@ require'compe'.setup {
     max_abbr_width = 100;
     max_kind_width = 100;
     max_menu_width = 100;
-    documentation = true;
 
     source = {
         path = true;
@@ -28,8 +30,8 @@ require'compe'.setup {
         calc = true;
         nvim_lsp = true;
         nvim_lua = true;
-        vsnip = true;
-        ultisnips = true;
-        treesitter = false;
+        spell = true;
+        tags = true;
+        snippets_nvim = true;
     };
 }

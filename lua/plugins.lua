@@ -4,10 +4,9 @@ set['packpath'] = 'C:\\nvim'
 set['runtimepath'] = set['runtimepath'] .. ',' .. set['packpath']
 
 cmd [[packadd packer.nvim]]
+Packer = require('packer')
 
-packer = require('packer')
-
-packer.init({
+Packer.init({
     ensure_dependencies   = true, -- Should packer install plugin dependencies?
 
     -- Used to specify a new directory for package management.
@@ -67,7 +66,7 @@ packer.init({
     }
 })
 
-return packer.startup(function()
+return Packer.startup(function()
     use 'wbthomason/packer.nvim'
 
     -- Colorscheme/Visual plugins
