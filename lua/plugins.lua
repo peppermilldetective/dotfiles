@@ -101,6 +101,8 @@ return Packer.startup(function()
     use 'nvim-lua/lsp_extensions.nvim'
     use 'ojroques/nvim-lspfuzzy'
 
+    use 'simrat39/rust-tools.nvim'
+
     use { 'nvim-treesitter/nvim-treesitter', run = function() fn['TSUpdate']() end }
 
     use 'hrsh7th/nvim-compe'
