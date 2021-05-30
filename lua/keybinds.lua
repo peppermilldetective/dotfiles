@@ -73,3 +73,6 @@ map('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
 
 map('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
 map("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+
+-- barbar keybinds
+map('n', '<leader>b', ':BufferPick<CR>')

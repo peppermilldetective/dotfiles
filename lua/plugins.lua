@@ -114,6 +114,7 @@ return Packer.startup(function()
 
     use 'pechorin/any-jump.vim'
     use 'kyazdani42/nvim-tree.lua'
+    use 'romgrk/barbar.nvim'
 
     -- Formatting Plugins
 
