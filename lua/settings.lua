@@ -26,7 +26,7 @@ opt('b', 'shiftwidth', 4)
 opt('b', 'autoindent', true)
 opt('b', 'smartindent', true)
 
-opt('b', 'swapfile', true)
+opt('b', 'swapfile', false)
 
 -- global/"option" interface
 opt('o', 'mouse', 'a')
@@ -68,7 +68,7 @@ opt('o', 'visualbell', false)
 
 opt('o', 'backup', false)
 opt('o', 'writebackup', false)
-opt('o', 'undofile', true)
+opt('o', 'undofile', false)
 
 opt('o', 'hlsearch', false)
 

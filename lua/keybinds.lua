@@ -9,18 +9,18 @@ end
 -- set leader
 vim.g.mapleader = ';'
 
+-- General Purpose Keybinds
 map('n', '<leader>n', ':bn<Enter>')
 map('n', '<leader>N', ':bp<Enter>')
 map('n', '<leader>q', ':bd<Enter>')
 
-map('', '<leader>c', '"+y')
-map('', '<leader>p', '"+p')
+map('n', '<leader>c', '"+y')
+map('n', '<leader>p', '"+p')
+map('v', '<leader>c', '"+y')
+map('v', '<leader>p', '"+p')
 
 map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})
 map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', {expr = true})
-
-map('i', '<Tab>', '<Plug>(completion_smart_tab)')
-map('i', '<S-Tab>', '<Plug>(completion_smart_s_tab)')
 
 map('n', '<C-p>', ':Files<Enter>')
 map('n', '<C-o>', ':Rg<Enter>')
@@ -36,3 +36,13 @@ map('n', '<leader>sa', '<Plug>(operator-sandwich-add)')
 
 map('x', '<leader>sd', '<Plug>(operator-sandwich-delete)')
 map('x', '<leader>sr', '<Plug>(operator-sandwich-replace)')
+
+-- LSP Keybinds can be found in lsp.lua
+
+-- nvim-compe keybinds
+
+map('n', '<C-Space>', 'compe#complete()')
+map('n', '<CR>', 'pumvisible() ? compe#confirm("<CR>") : "\\<CR>"', {expr = true})
+map('n', '<C-e>', 'pumvisible() ? compe#close("<C-e>") : "\\<C-e>"', {expr = true})
+map('n', '<C-f>', 'pumvisible() ? compe#scroll({ "delta": +4 }) : "\\<C-f>"', {expr = true})
+map('n', '<C-d>', 'pumvisible() ? compe#scroll({ "delta": -4 }) : "\\<C-f>"', {expr = true})

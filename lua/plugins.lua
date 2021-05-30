@@ -77,7 +77,7 @@ return packer.startup(function()
     use 'rafi/awesome-vim-colorschemes'
     use {
         'kaicataldo/material.vim',
-        branch = 'main'
+        branch = 'main',
     }
 
     use 'Yggdroot/indentLine'
@@ -92,12 +92,19 @@ return packer.startup(function()
         requires = { 'kyazdani42/nvim-web-devicons' },
     }
 
+    use 'nvim-lua/popup.nvim'
+    use 'nvim-lua/plenary.nvim'
+    use 'nvim-telescope/telescope.nvim'
+
     -- LSP Plugins
 
     use 'neovim/nvim-lspconfig'
     use 'nvim-lua/lsp_extensions.nvim'
-    use 'nvim-lua/completion-nvim'
     use 'ojroques/nvim-lspfuzzy'
+
+    use { 'nvim-treesitter/nvim-treesitter', run = function() fn['TSUpdate']() end }
+
+    use 'hrsh7th/nvim-compe'
 
     -- Navigation Plugins
 
