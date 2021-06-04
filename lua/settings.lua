@@ -2,88 +2,78 @@
 
 -- Used as a workaround to deal with some strange behaviours (PR#13479 in neovim)
 
-local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
-
-local function opt(scope, key, value)
-    if scope ~= 'o' then scopes['o'][key] = value end
-    scopes[scope][key] = value
-end
+local opt = vim.opt
 
 -- Normal Things?
 cmd 'syntax enable'
 cmd 'filetype plugin indent on'
 
--- buffer options
-opt('b', 'modeline', true)
+opt.modeline = true
 
-opt('b', 'infercase', true)
-opt('b', 'complete', '.,w,b')
+opt.infercase = true
+opt.complete = '.,w,b'
 
-opt('b', 'expandtab', true)
-opt('b', 'softtabstop', 4)
-opt('b', 'tabstop', 4)
-opt('b', 'shiftwidth', 4)
-opt('b', 'autoindent', true)
-opt('b', 'smartindent', true)
+opt.expandtab = true
+opt.softtabstop = 4
+opt.tabstop = 4
+opt.shiftwidth = 4
+opt.autoindent = true
+opt.smartindent = true
 
-opt('b', 'swapfile', false)
+opt.swapfile = false
 
--- global/"option" interface
-opt('o', 'mouse', 'a')
+opt.mouse = 'a'
 
-opt('o', 't_vb', '')
-opt('o', 'hidden', true)
+opt.hidden = true
 
-opt('o', 'termguicolors', true)
-opt('o', 'guifont', 'FiraCode Nerd Font:h10')
-opt('o', 'incsearch', true)
-opt('o', 'magic', true)
+opt.termguicolors = true
+opt.guifont = 'FiraCode Nerd Font:h10'
+opt.incsearch = true
+opt.magic = true
 
-opt('o', 'history', 2000)
-opt('o', 'smarttab', true)
-opt('o', 'shiftround', true)
-opt('o', 'timeout', true)
-opt('o', 'ttimeout', true)
-opt('o', 'timeoutlen', 500)
-opt('o', 'ttimeoutlen', 100)
-opt('o', 'updatetime', 300)
-opt('o', 'redrawtime', 1500)
-opt('o', 'whichwrap', 'h,l,<,>,[,],~')
-opt('o', 'splitright', true)
-opt('o', 'switchbuf', 'useopen,vsplit')
-opt('o', 'backspace', 'indent,eol,start')
-opt('o', 'diffopt', 'filler,iwhite')
-opt('o', 'completeopt', 'menuone,noselect,noinsert')
-opt('o', 'makeprg', 'build.bat')
-opt('o', 'shortmess', 'aoOIqc')
-opt('o', 'scrolloff', 8)
-opt('o', 'sidescrolloff', 5)
-opt('o', 'ruler', true)
-opt('o', 'showcmd', true)
-opt('o', 'cmdheight', 2)
-opt('o', 'laststatus', 2)
+opt.history = 2000
+opt.smarttab = true
+opt.shiftround = true
+opt.timeout = true
+opt.ttimeout = true
+opt.timeoutlen = 500
+opt.ttimeoutlen = 100
+opt.updatetime = 300
+opt.redrawtime = 1500
+opt.whichwrap = 'h,l,<,>,[,],~'
+opt.splitright = true
+opt.switchbuf = 'useopen,vsplit'
+opt.backspace = 'indent,eol,start'
+opt.diffopt = 'filler,iwhite'
+opt.completeopt = 'menuone,noselect,noinsert'
+opt.makeprg = 'build.bat'
+opt.shortmess = 'aoOIqc'
+opt.scrolloff = 8
+opt.sidescrolloff = 5
+opt.ruler = true
+opt.showcmd = true
+opt.cmdheight = 2
+opt.laststatus = 2
 
-opt('o', 'errorbells', false)
-opt('o', 'visualbell', false)
+opt.errorbells = false
+opt.visualbell = false
 
-opt('o', 'backup', false)
-opt('o', 'writebackup', false)
-opt('o', 'undofile', false)
+opt.backup = false
+opt.writebackup = false
+opt.undofile = false
 
-opt('o', 'hlsearch', false)
+opt.hlsearch = false
 
-opt('o', 'ignorecase', true)
-opt('o', 'smartcase', true)
-opt('o', 'wrapscan', true)
-opt('o', 'wrap', false)
+opt.ignorecase = true
+opt.smartcase = true
+opt.wrapscan = true
+opt.wrap = false
 
----- window
+opt.nu = true
+opt.signcolumn = 'yes'
 
-opt('w', 'nu', true)
-
-opt('w', 'signcolumn', 'yes')
-
-opt('w', 'term', 'xterm-256color')
+-- Strictly a window option.
+vim.wo.term = 'xterm-256color'
 
 ---- Plugin settings?
 

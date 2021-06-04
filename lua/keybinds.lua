@@ -10,9 +10,11 @@ end
 vim.g.mapleader = ';'
 
 -- General Purpose Keybinds
-map('n', '<leader>n', ':bn<Enter>')
-map('n', '<leader>N', ':bp<Enter>')
-map('n', '<leader>q', ':bd<Enter>')
+map('n', '<leader>n', ':BufferNext<Enter>')
+map('n', '<leader>N', ':BufferPrevious<Enter>')
+map('n', '<leader>q', ':BufferClose<Enter>')
+
+map('n', '<leader>w', ':w<CR>')
 
 map('n', '<leader>c', '"+y')
 map('n', '<leader>p', '"+p')
@@ -20,7 +22,7 @@ map('v', '<leader>c', '"+y')
 map('v', '<leader>p', '"+p')
 
 map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})
-map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', {expr = true})
+map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', {expr = true})
 
 map('n', '<C-p>', ':Files<Enter>')
 map('n', '<C-o>', ':Rg<Enter>')
@@ -58,10 +60,7 @@ map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 map('n', 'gc', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>')
-map('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>')
-map('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>')
-map('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+map('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
@@ -70,9 +69,6 @@ map('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
 -- Goto previous/next diagnostic warning/error
 map('n', 'g[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
 map('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
-
-map('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
-map("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>")
 
 -- barbar keybinds
 map('n', '<leader>b', ':BufferPick<CR>')
