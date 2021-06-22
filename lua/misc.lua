@@ -3,9 +3,6 @@
 -- Highlight on yank
 cmd 'au TextYankPost * lua vim.highlight.on_yank { on_visual = false }' -- disabled in visual mode
 
--- rust-analyzer show inlay hints on new file
-cmd "au InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs lua require'lsp_extensions'.inlay_hints{}"
-
 -- nvim-tree auto open on vim start
 -- TODO: Figure out a different system that detects when a git commit is being edited.
 -- cmd "au VimEnter * NvimTreeOpen"

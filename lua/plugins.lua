@@ -109,8 +109,8 @@ return Packer.startup(function()
 
     -- Navigation Plugins
 
-    use { 'junegunn/fzf', run = function() fn['fzf#install']() end }
-    use 'junegunn/fzf.vim'
+    -- use { 'junegunn/fzf', run = function() fn['fzf#install']() end }
+    -- use 'junegunn/fzf.vim'
 
     use 'pechorin/any-jump.vim'
     use 'kyazdani42/nvim-tree.lua'

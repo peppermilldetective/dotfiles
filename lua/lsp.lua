@@ -106,9 +106,6 @@ local opts = {
 
 require('rust-tools').setup(opts)
 
--- Show diagnostic popup on cursor hold
-cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]]
-
 -- Set inlay hints on entering a rust file.
 cmd "au BufEnter *.rs lua require('rust-tools.inlay_hints').set_inlay_hints()"
 

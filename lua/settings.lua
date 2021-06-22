@@ -8,10 +8,7 @@ local opt = vim.opt
 cmd 'syntax enable'
 cmd 'filetype plugin indent on'
 
-opt.modeline = true
-
 opt.infercase = true
-opt.complete = '.,w,b'
 
 opt.expandtab = true
 opt.softtabstop = 4
@@ -19,6 +16,9 @@ opt.tabstop = 4
 opt.shiftwidth = 4
 opt.autoindent = true
 opt.smartindent = true
+
+-- required for nvim-compe
+opt.completeopt = 'menuone,noselect,noinsert'
 
 opt.swapfile = false
 
@@ -45,7 +45,6 @@ opt.splitright = true
 opt.switchbuf = 'useopen,vsplit'
 opt.backspace = 'indent,eol,start'
 opt.diffopt = 'filler,iwhite'
-opt.completeopt = 'menuone,noselect,noinsert'
 opt.makeprg = 'build.bat'
 opt.shortmess = 'aoOIqc'
 opt.scrolloff = 8
@@ -66,7 +65,6 @@ opt.hlsearch = false
 
 opt.ignorecase = true
 opt.smartcase = true
-opt.wrapscan = true
 opt.wrap = false
 
 opt.nu = true
@@ -98,23 +96,51 @@ if vim.fn.executable('rg') then
     set.grepprg = 'rg --vimgrep' .. (vim.o.smartcase and ' --smartcase' or '')
 end
 
+-- nvim-compe settings
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'disable';
+  throttle_time = 80;
+  source_timeout = 200;
+  resolve_timeout = 800;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    buffer = true;
+    tags = true;
+    calc = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    nvim_treesitter = true;
+  };
+}
+
 -- nvim-tree settings
 vim.g.nvim_tree_side = 'left' -- left by default
 vim.g.nvim_tree_width = 40 -- 30 by default
 vim.g.nvim_tree_ignore = { '.git', 'node_modules', '.cache', '.cargo' } -- empty by default
-vim.g.nvim_tree_gitignore = 1 -- 0 by default
-vim.g.nvim_tree_auto_open = 1 -- 0 by default, opens the tree when typing `vim $DIR` or `vim`
+vim.g.nvim_tree_gitignore = 0 -- 0 by default
+vim.g.nvim_tree_auto_open = 0 -- 0 by default, opens the tree when typing `vim $DIR` or `vim`
 vim.g.nvim_tree_auto_close = 1 -- 0 by default, closes the tree when it's the last window
 vim.g.nvim_tree_auto_ignore_ft = { 'startify', 'dashboard' } -- empty by default, don't auto open tree on specific filetypes.
-vim.g.nvim_tree_quit_on_open = 0 -- 0 by default, closes the tree when you open a file
+vim.g.nvim_tree_quit_on_open = 1 -- 0 by default, closes the tree when you open a file
 vim.g.nvim_tree_follow = 1 -- 0 by default, this option allows the cursor to be updated when entering a buffer
 vim.g.nvim_tree_indent_markers = 1 -- 0 by default, this option shows indent markers when folders are open
 vim.g.nvim_tree_hide_dotfiles = 0 -- 0 by default, this option hides files and folders starting with a dot `.`
 vim.g.nvim_tree_git_hl = 1 -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
 vim.g.nvim_tree_highlight_opened_files = 1 -- 0 by default, will enable folder and file icon highlight for opened files/directories.
 vim.g.nvim_tree_root_folder_modifier = ':~' -- This is the default. See :help filename-modifiers for more options
-vim.g.nvim_tree_tab_open = 1 -- 0 by default, will open the tree when entering a new tab and the tree was previously open
-vim.g.nvim_tree_width_allow_resize  = 1 -- 0 by default, will not resize the tree when opening a file
+vim.g.nvim_tree_tab_open = 0 -- 0 by default, will open the tree when entering a new tab and the tree was previously open
+vim.g.nvim_tree_width_allow_resize  = 0 -- 0 by default, will not resize the tree when opening a file
 vim.g.nvim_tree_disable_netrw = 0 -- 1 by default, disables netrw
 vim.g.nvim_tree_hijack_netrw = 0 -- 1 by default, prevents netrw from automatically opening when opening directories (but lets you keep its other utilities)
 vim.g.nvim_tree_add_trailing = 1 -- 0 by default, append a trailing slash to folder names
@@ -134,7 +160,12 @@ vim.g.nvim_tree_window_picker_exclude = {
 -- Dictionary of buffer option names mapped to a list of option values that
 -- indicates to the window picker that the buffer's window should not be
 -- selectable.
-vim.g.nvim_tree_special_files = { 'README.md', 'Makefile', 'MAKEFILE', 'cargo.toml' } -- List of filenames that gets highlighted with NvimTreeSpecialFile
+vim.g.nvim_tree_special_files = { -- List of filenames that gets highlighted with NvimTreeSpecialFile
+    'README.md',
+    'Makefile',
+    'MAKEFILE',
+    'cargo.toml'
+}
 
 -- If 0, do not show the icons for one of 'git' 'folder' and 'files'
 -- 1 by default, notice that if 'files' is 1, it will only display
@@ -180,3 +211,58 @@ vim.g.nvim_tree_icons = {
 
 -- a list of groups can be found at `:help nvim_tree_highlight`
 -- highlight NvimTreeFolderIcon guibg=blue
+
+-- telescope.nvim
+
+require('telescope').setup{
+    defaults = {
+        vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case'
+        },
+        prompt_position = "bottom",
+        prompt_prefix = "> ",
+        selection_caret = "> ",
+        entry_prefix = "  ",
+        initial_mode = "insert",
+        selection_strategy = "reset",
+        sorting_strategy = "descending",
+        layout_strategy = "horizontal",
+        layout_defaults = {
+            horizontal = {
+                mirror = false,
+            },
+            vertical = {
+                mirror = false,
+            },
+        },
+        file_sorter =  require'telescope.sorters'.get_fuzzy_file,
+        file_ignore_patterns = {
+            "target/**",
+            ".git/**",
+        },
+        generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
+        shorten_path = true,
+        winblend = 0,
+        width = 0.75,
+        preview_cutoff = 120,
+        results_height = 1,
+        results_width = 0.8,
+        border = {},
+        borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+        color_devicons = true,
+        use_less = true,
+        set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
+        file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
+        grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
+        qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+
+        -- Developer configurations: Not meant for general override
+        buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
+    }
+}
