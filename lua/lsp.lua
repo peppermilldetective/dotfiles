@@ -10,6 +10,14 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local on_attach = function(client, bufnr)
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
+    require'lsp_signature'.on_attach({
+        bind = true,
+        handler_opts = {
+            border = 'single'
+        },
+        hint_prefix = '=> ',
+    })
+
     --Enable completion triggered by <c-x><c-o>
     buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
@@ -190,4 +198,49 @@ ts.setup{
     highlight = {
         enable = true
     }
+}
+
+-- lsp-saga config
+local saga = require'lspsaga'
+
+saga.init_lsp_saga {
+    use_saga_diagnostic_sign = true,
+    error_sign = '',
+    warn_sign = '',
+    hint_sign = '',
+    infor_sign = '',
+    dianostic_header_icon = '   ',
+    code_action_icon = ' ',
+    code_action_prompt = {
+        enable = true,
+        sign = true,
+        sign_priority = 20,
+        virtual_text = true,
+    },
+    finder_definition_icon = '  ',
+    finder_reference_icon = '  ',
+    max_preview_lines = 10, -- preview lines of lsp_finder and definition preview
+    finder_action_keys = {
+        open = 'o',
+        vsplit = 's',
+        split = 'i',
+        quit = 'q', -- quit can be a table
+        scroll_down = '<C-f>',
+        scroll_up = '<C-b>',
+    },
+    code_action_keys = {
+        quit = 'q',
+        exec = '<CR>',
+    },
+    rename_action_keys = {
+        quit = '<C-c>', -- quit can be a table
+        exec = '<CR>', 
+    },
+    definition_preview_icon = '  ',
+    -- "single" "double" "round" "plus"
+    border_style = "single",
+    rename_prompt_prefix = '➤',
+    -- if you don't use nvim-lspconfig you must pass your server name and the related filetypes into this table
+    -- like server_filetype_map = {metals = {'sbt', 'scala'}},
+    server_filetype_map = {}
 }

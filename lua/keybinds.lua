@@ -55,21 +55,29 @@ map('n', '<leader>f', ':NvimTreeFindFile<CR>')
 -- nvim LSP Keybinds
 
 -- See `:help vim.lsp.*` for documentation on any of the below functions
-map('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>')
+map('n', 'gD', '<Cmd>lua require"lspsaga.provider".preview_definition()<CR>')
 map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>')
+map('n', 'gh', '<cmd>lua require"lspsaga.provider".lsp_finder()<CR>')
+map('n', 'gs', '<cmd>lua require"lspsaga.signaturehelp".signature_help()<CR>')
 map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 map('n', 'gc', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 map('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-map('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<CR>')
-map('n', '<leader>ca', '<cmd>Telescope lsp_code_actions<CR>')
-map('v', '<leader>ca', '<cmd>Telescope lsp_range_code_actions<CR>')
+map('n', '<F2>', '<cmd>lua require"lspsaga.rename".rename()<CR>')
+map('n', '<leader>ca', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
+map('v', '<leader>ca', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
+map('n', '<leader>cc', '<cmd>lua require("lspsaga.diagnostic").show_cursor_diagnostics()<CR>')
 map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
 map('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
 
+map('n', 'K', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>')
+
+map('n', '<C-f>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
+map('n', '<C-b>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
+
 -- Goto previous/next diagnostic warning/error
-map('n', 'g[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
-map('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+map('n', 'g[', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')
+map('n', 'g]', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>')
 
 -- barbar keybinds
 map('n', '<leader>b', ':BufferPick<CR>')
