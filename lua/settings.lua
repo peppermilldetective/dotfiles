@@ -27,7 +27,6 @@ opt.mouse = 'a'
 opt.hidden = true
 
 opt.termguicolors = true
-opt.guifont = 'FiraCode Nerd Font:h10'
 opt.incsearch = true
 opt.magic = true
 
