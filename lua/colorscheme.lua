@@ -1,6 +1,8 @@
 -- Colorscheme
 
--- TODO: create a custom color scheme as all the default ones don't quite work the best.
-cmd 'colorscheme material'
+g.material_style = 'deep ocean'
+g.material_contrast = true
+g.material_italic_functions = true
+g.material_borders = true
 
-vim.g.material_style = 'darker'
+require('material').set()

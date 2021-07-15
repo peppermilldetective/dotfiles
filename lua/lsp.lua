@@ -12,6 +12,9 @@ local on_attach = function(client, bufnr)
 
     require'lsp_signature'.on_attach({
         bind = true,
+        doc_lines = 4,
+        floating_window = true,
+        use_lspsaga = true,
         handler_opts = {
             border = 'single'
         },
@@ -219,7 +222,7 @@ saga.init_lsp_saga {
     },
     finder_definition_icon = '  ',
     finder_reference_icon = '  ',
-    max_preview_lines = 10, -- preview lines of lsp_finder and definition preview
+    max_preview_lines = 20, -- preview lines of lsp_finder and definition preview
     finder_action_keys = {
         open = 'o',
         vsplit = 's',

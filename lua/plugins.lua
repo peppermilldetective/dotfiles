@@ -19,28 +19,22 @@ return Packer.startup(function()
 
     -- Colorscheme/Visual plugins
 
-    use 'itchyny/vim-gitbranch'
     use 'kyazdani42/nvim-web-devicons'
-    use 'rafi/awesome-vim-colorschemes'
-    use {
-        'kaicataldo/material.vim',
-        branch = 'main',
-    }
 
-    use 'lukas-reineke/indent-blankline.nvim'
+    use 'marko-cerovac/material.nvim'
+
+    use 'hoob3rt/lualine.nvim'
 
     use 'airblade/vim-gitgutter'
     use 'mhinz/vim-signify'
 
     use {
-        'glepnir/galaxyline.nvim',
-        branch = 'main',
-        requires = { 'kyazdani42/nvim-web-devicons' },
+        'nvim-telescope/telescope.nvim',
+        requires = {
+            { 'nvim-lua/popup.nvim' },
+            { 'nvim-lua/plenary.nvim' },
+        }
     }
-
-    use 'nvim-lua/popup.nvim'
-    use 'nvim-lua/plenary.nvim'
-    use 'nvim-telescope/telescope.nvim'
 
     -- LSP Plugins
 
@@ -60,15 +54,11 @@ return Packer.startup(function()
 
     -- Navigation Plugins
 
-    -- use { 'junegunn/fzf', run = function() fn['fzf#install']() end }
-    -- use 'junegunn/fzf.vim'
-
     use 'pechorin/any-jump.vim'
     use 'kyazdani42/nvim-tree.lua'
     use 'romgrk/barbar.nvim'
 
     -- Formatting Plugins
 
-    use 'machakann/vim-sandwich'
     use 'bfrg/vim-cpp-modern'
 end)
