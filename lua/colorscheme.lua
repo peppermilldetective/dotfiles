@@ -1,8 +1,7 @@
--- Colorscheme
+-- Settings for Ayu
+require('ayu').setup({
+    mirage = false,
+    overrides = {},
+})
 
-g.material_style = 'deep ocean'
-g.material_contrast = true
-g.material_italic_functions = true
-g.material_borders = true
-
-require('material').set()
+vim.cmd[[colorscheme ayu-dark]]

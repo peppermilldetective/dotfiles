@@ -1,6 +1,3 @@
-GuiPopupmenu 0
-GuiFont! FiraCode Nerd Font Mono:h10
-
 lua << EOF
 -- Declare globals for interfacing with the vim api.
 cmd = vim.cmd
@@ -18,13 +15,33 @@ g.loaded_2html_plugin = false
 g.loaded_remote_plugins = false
 
 -- Import the various custom scripts.
-require('plugins')
+-- Plugins
 
-require("colorscheme")
+cmd [[packadd packer.nvim]]
+Packer = require('packer')
+
+Packer.init({
+    ensure_dependencies   = true, -- Should packer install plugin dependencies?
+})
+
+return Packer.startup(function()
+    use 'wbthomason/packer.nvim'
+
+    -- Colorscheme/Visual plugins
+
+    use 'kyazdani42/nvim-web-devicons'
+
+    -- LSP Plugins
+
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+
+    -- Navigation Plugins
+
+    use 'pechorin/any-jump.vim'
+end)
+
 require("keybinds")
-require("lsp")
 require("settings")
-require("statusline")
 require("misc")
 
 -- Adds transparency to nvim based on terminal settings

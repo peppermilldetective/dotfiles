@@ -1,249 +1,207 @@
--- LSP configurations
+local lsp_installer = require"nvim-lsp-installer"
 
-local lsp = require'lspconfig'
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-    require'lsp_signature'.on_attach({
-        bind = true,
-        doc_lines = 4,
-        floating_window = true,
-        use_lspsaga = true,
-        handler_opts = {
-            border = 'single'
+lsp_installer.settings({
+    ui = {
+        icons = {
+            server_installed = "✓",
+            server_pending = "➜",
+            server_uninstalled = "✗"
         },
-        hint_prefix = '=> ',
-    })
-
-    --Enable completion triggered by <c-x><c-o>
-    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-end
-
-vim.lsp.set_log_level("debug")
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { "pyright", "rust_analyzer", "tsserver" }
-for _, clsp in ipairs(servers) do
-  lsp[clsp].setup { on_attach = on_attach }
-end
-
--- TypeScript
-
-lsp.tsserver.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    init_options = { usePlaceholders = true }
-}
-
--- Rust
--- Copied from: https://github.com/simrat39/rust-tools.nvim
-
-local opts = {
-    tools = { -- rust-tools options
-        -- automatically set inlay hints (type hints)
-        -- There is an issue due to which the hints are not applied on the first
-        -- opened file. For now, write to the file to trigger a reapplication of
-        -- the hints or just run :RustSetInlayHints.
-        -- default: true
-        autoSetHints = true,
-
-        -- whether to show hover actions inside the hover window
-        -- this overrides the default hover handler
-        -- default: true
-        hover_with_actions = true,
-
-        runnables = {
-            -- whether to use telescope for selection menu or not
-            -- default: true
-            use_telescope = true
-
-            -- rest of the opts are forwarded to telescope
+        keymaps = {
+            -- Keymap to expand a server in the UI
+            toggle_server_expand = "<CR>",
+            -- Keymap to install a server
+            install_server = "i",
+            -- Keymap to reinstall/update a server
+            update_server = "u",
+            -- Keymap to update all installed servers
+            update_all_servers = "U",
+            -- Keymap to uninstall a server
+            uninstall_server = "X",
         },
-
-        inlay_hints = {
-            -- wheter to show parameter hints with the inlay hints or not
-            -- default: true
-            show_parameter_hints = true,
-
-            -- prefix for parameter hints
-            -- default: "<-"
-            parameter_hints_prefix = "<-",
-
-            -- prefix for all the other hints (type, chaining)
-            -- default: "=>"
-            other_hints_prefix  = "=>",
-
-            -- whether to align to the lenght of the longest line in the file
-            max_len_align = false,
-
-            -- padding from the left if max_len_align is true
-            max_len_align_padding = 1,
-
-            -- whether to align to the extreme right or not
-            right_align = false,
-
-            -- padding from the right if right_align is true
-            right_align_padding = 7,
-        },
-
-        hover_actions = {
-            -- the border that is used for the hover window
-            -- see vim.api.nvim_open_win()
-            border = {
-              {"╭", "FloatBorder"},
-              {"─", "FloatBorder"},
-              {"╮", "FloatBorder"},
-              {"│", "FloatBorder"},
-              {"╯", "FloatBorder"},
-              {"─", "FloatBorder"},
-              {"╰", "FloatBorder"},
-              {"│", "FloatBorder"}
-            },
-        }
-    },
-
-    -- all the opts to send to nvim-lspconfig
-    -- these override the defaults set by rust-tools.nvim
-    -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
-    server = {}, -- rust-analyer options
-}
-
-require('rust-tools').setup(opts)
-
--- Set inlay hints on entering a rust file.
-cmd "au BufEnter *.rs lua require('rust-tools.inlay_hints').set_inlay_hints()"
-
--- CSharp (omnisharp)
-
-local pid = vim.fn.getpid()
-
-local omnisharp_bin = "C:\\lsp\\omnisharp\\OmniSharp.exe"
-
-lsp.omnisharp.setup{
-    cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) };
-    ...
-}
-
--- Lua (sumneko/lua-language-server)
-
-local system_name
-if vim.fn.has("mac") == 1 then
-  system_name = "macOS"
-elseif vim.fn.has("unix") == 1 then
-  system_name = "Linux"
-elseif vim.fn.has('win32') == 1 then
-  system_name = "Windows"
-else
-  print("Unsupported system for sumneko")
-end
-
--- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
-local sumneko_root_path = 'C:/lsp/lua-language-server'
-local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server.exe"
-
-require'lspconfig'.sumneko_lua.setup {
-  cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-        -- Setup your lua path
-        path = vim.split(package.path, ';'),
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = {
-          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-        },
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-}
-
--- Tree-sitter config
-local ts = require'nvim-treesitter.configs'
-ts.setup{
-    ensure_installed = {
-        'rust',
-        'c_sharp',
-        'c',
-        'dart',
-        'cpp',
-        'bash',
-        'html',
-        'javascript',
-        'toml',
-        'css',
-        'lua',
-        'python',
-        'scss',
-        'typescript',
-        'vue',
-        'zig',
-    },
-    highlight = {
-        enable = true
     }
+})
+
+lsp_installer.on_server_ready(function(server)
+    local opts = {}
+
+    server:setup(opts)
+end)
+
+local lsp_installer_servers = require'nvim-lsp-installer.servers'
+
+local server_available, requested_server = lsp_installer_servers.get_server("rust_analyzer")
+if server_available then
+    requested_server:on_ready(function ()
+        local opts = {}
+        requested_server:setup(opts)
+    end)
+    if not requested_server:is_installed() then
+        -- Queue the server to be installed
+        requested_server:install()
+    end
+end
+
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = {
+        "rust",
+        "lua",
+        "css",
+        "javascript",
+        "typescript",
+        "vim"
+    },
+    sync_install = false,
 }
 
--- lsp-saga config
-local saga = require'lspsaga'
+require'navigator'.setup({
+    debug = false, -- log output
+    width = 0.62, -- valeu of cols
+    height = 0.38, -- listview height
+    preview_height = 0.38,
+    preview_lines = 40, -- total lines in preview screen
+    preview_lines_before = 5, -- lines before the highlight line
+    default_mapping = false,
+    keymaps = { -- e.g keymaps={{key = "GR", func = "references()"}, } this replace gr default mapping
+        -- { key = 'gr', func = "require('navigator.reference').reference()" },
+        -- { key = 'Gr', func = "require('navigator.reference').async_ref()" },
+        { mode = 'i', key = '<M-k>', func = 'signature_help()' },
+        { key = '<c-k>', func = 'signature_help()' },
+        -- { key = 'g0', func = "require('navigator.symbols').document_symbols()" },
+        -- { key = 'gW', func = "require('navigator.workspace').workspace_symbol()" },
+        -- { key = '<c-]>', func = "require('navigator.definition').definition()" },
+        -- { key = 'gD', func = "declaration({ border = 'rounded', max_width = 80 })" },
+        -- { key = 'gp', func = "require('navigator.definition').definition_preview()" },
+        -- { key = 'gT', func = "require('navigator.treesitter').buf_ts()" },
+        -- { key = '<Leader>gT', func = "require('navigator.treesitter').bufs_ts()" },
+        { key = 'K', func = 'hover({ popup_opts = { border = single, max_width = 80 }})' },
+        -- { key = '<Space>ca', mode = 'n', func = "require('navigator.codeAction').code_action()" },
+        -- { key = '<Space>cA', mode = 'v', func = 'range_code_action()' },
+        -- { key = '<Leader>re', func = 'rename()' },
+        { key = '<F2>', func = "require('navigator.rename').rename()" },
+        { key = '<Leader>gi', func = 'incoming_calls()' },
+        { key = '<Leader>go', func = 'outgoing_calls()' },
+        -- { key = 'gi', func = 'implementation()' },
+        -- { key = '<Space>D', func = 'type_definition()' },
+        -- { key = 'gL', func = "require('navigator.diagnostics').show_diagnostics()" },
+        -- { key = 'gG', func = "require('navigator.diagnostics').show_buf_diagnostics()" },
+        -- { key = '<Leader>dt', func = "require('navigator.diagnostics').toggle_diagnostics()" },
+        -- { key = ']d', func = "diagnostic.goto_next({ border = 'rounded', max_width = 80})" },
+        -- { key = '[d', func = "diagnostic.goto_prev({ border = 'rounded', max_width = 80})" },
+        -- { key = ']r', func = "require('navigator.treesitter').goto_next_usage()" },
+        -- { key = '[r', func = "require('navigator.treesitter').goto_previous_usage()" },
+        -- { key = '<C-LeftMouse>', func = 'definition()' },
+        -- { key = 'g<LeftMouse>', func = 'implementation()' },
+        -- { key = '<Leader>k', func = "require('navigator.dochighlight').hi_symbol()" },
+        -- { key = '<Space>wa', func = "require('navigator.workspace').add_workspace_folder()" },
+        -- { key = '<Space>wr', func = "require('navigator.workspace').remove_workspace_folder()" },
+        -- { key = '<Space>ff', func = 'formatting()', mode = 'n' },
+        -- { key = '<Space>ff', func = 'range_formatting()', mode = 'v' },
+        -- { key = '<Space>wl', func = "require('navigator.workspace').list_workspace_folders()" },
+        -- { key = '<Space>la', mode = 'n', func = "require('navigator.codelens').run_action()" },
+    },
+    external = nil, -- true: enable for goneovim multigrid otherwise false
 
-saga.init_lsp_saga {
-    use_saga_diagnostic_sign = true,
-    error_sign = '',
-    warn_sign = '',
-    hint_sign = '',
-    infor_sign = '',
-    dianostic_header_icon = '   ',
-    code_action_icon = ' ',
-    code_action_prompt = {
-        enable = true,
-        sign = true,
-        sign_priority = 20,
-        virtual_text = true,
+    border = 'single', -- border style, can be one of 'none', 'single', 'double', "shadow"
+    lines_show_prompt = 10, -- when the result list items number more than lines_show_prompt,
+    -- fuzzy finder prompt will be shown
+    combined_attach = 'both', -- both: use both customized attach and navigator default attach, mine: only use my attach defined in vimrc
+    on_attach = function(client, bufnr)
+        -- your on_attach will be called at end of navigator on_attach
+    end,
+    ts_fold = false,
+    -- code_action_prompt = {enable = true, sign = true, sign_priority = 40, virtual_text = true},
+    -- code_lens_action_prompt = {enable = true, sign = true, sign_priority = 40, virtual_text = true},
+    treesitter_analysis = true, -- treesitter variable context
+    transparency = 50, -- 0 ~ 100 blur the main window, 100: fully transparent, 0: opaque,  set to nil to disable it
+    lsp_signature_help = true, -- if you would like to hook ray-x/lsp_signature plugin in navigator
+    -- setup here. if it is nil, navigator will not init signature help
+    signature_help_cfg = nil, -- if you would like to init ray-x/lsp_signature plugin in navigator, pass in signature help
+    lsp = {
+        code_action = {
+            enable = true,
+            sign = true,
+            sign_priority = 40,
+            virtual_text = true,
+            virtual_text_icon = true,
+        },
+        code_lens_action = {
+            enable = true,
+            sign = true,
+            sign_priority = 40,
+            virtual_text = true,
+            virtual_text_icon = true,
+        },
+        format_on_save = false, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+        disable_format_cap = {}, -- a list of lsp disable file format (e.g. if you using efm or vim-codeformat etc), empty by default
+        disable_lsp = {}, -- a list of lsp server disabled for your project, e.g. denols and tsserver you may
+        code_lens = false,
+        -- only want to enable one lsp server
+        disply_diagnostic_qf = true, -- always show quickfix if there are diagnostic errors
+        diagnostic_load_files = false, -- lsp diagnostic errors list may contains uri that not opened yet set to true to load those files
+        diagnostic_virtual_text = true, -- show virtual for diagnostic message
+        diagnostic_update_in_insert = false, -- update diagnostic message in insert mode
+        diagnostic_scrollbar_sign = { '▃', '▆', '█' }, -- set to nil to disable, set to {'╍', 'ﮆ'} to enable diagnostic status in scroll bar area
+        tsserver = {
+            -- filetypes = {'typescript'} -- disable javascript etc,
+            -- set to {} to disable the lspclient for all filetype
+        },
+        sumneko_lua = {
+            -- sumneko_root_path = sumneko_root_path,
+            -- sumneko_binary = sumneko_binary,
+            -- cmd = {'lua-language-server'}
+        },
+        servers = {
+            'rust_analyzer',
+            'tsserver',
+            'bashls',
+            'dockerls',
+            'sumneko_lua',
+            'vimls',
+            'html',
+            'cssls',
+            'clangd',
+            'omnisharp'
+        }, -- you can add additional lsp server so navigator will load the default for you
     },
-    finder_definition_icon = '  ',
-    finder_reference_icon = '  ',
-    max_preview_lines = 20, -- preview lines of lsp_finder and definition preview
-    finder_action_keys = {
-        open = 'o',
-        vsplit = 's',
-        split = 'i',
-        quit = 'q', -- quit can be a table
-        scroll_down = '<C-f>',
-        scroll_up = '<C-b>',
+    lsp_installer = true, -- set to true if you would like use the lsp installed by williamboman/nvim-lsp-installer
+    icons = {
+        icons = true, -- set to false to use system default ( if you using a terminal does not have nerd/icon)
+        -- Code action
+        code_action_icon = " ",
+        -- code lens
+        code_lens_action_icon = '👓',
+        -- Diagnostics
+        diagnostic_head = ' ',
+        diagnostic_err = '📛',
+        diagnostic_warn = ' ',
+        diagnostic_info = ' ',
+        diagnostic_hint = ' ',
+
+        diagnostic_head_severity_1 = '🈲',
+        diagnostic_head_severity_2 = '☣️ ',
+        diagnostic_head_severity_3 = ' ',
+        diagnostic_head_description = '⇒',
+        diagnostic_virtual_text = '■',
+        diagnostic_file = '📝',
+        -- Values
+        value_changed = '▶',
+        value_definition = '◯', -- it is easier to see than 🦕
+        -- Treesitter
+        match_kinds = {
+            var = ' ', -- "👹", -- Vampaire
+            method = 'ƒ ', --  "🍔", -- mac
+            ['function'] = ' ', -- "🤣", -- Fun
+            parameter = '  ', -- Pi
+            associated = '🤝',
+            namespace = '🚀',
+            type = ' ',
+            field = ' ',
+        },
+        treesitter_defult = '🌲',
     },
-    code_action_keys = {
-        quit = 'q',
-        exec = '<CR>',
-    },
-    rename_action_keys = {
-        quit = '<C-c>', -- quit can be a table
-        exec = '<CR>', 
-    },
-    definition_preview_icon = '  ',
-    -- "single" "double" "round" "plus"
-    border_style = "single",
-    rename_prompt_prefix = '➤',
-    -- if you don't use nvim-lspconfig you must pass your server name and the related filetypes into this table
-    -- like server_filetype_map = {metals = {'sbt', 'scala'}},
-    server_filetype_map = {}
-}
+})
+
+
+vim.cmd("autocmd FileType guihua lua require('cmp').setup.buffer { enabled = false }")
+vim.cmd("autocmd FileType guihua_rust lua require('cmp').setup.buffer { enabled = false }")

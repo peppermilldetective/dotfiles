@@ -24,8 +24,8 @@ map('v', '<leader>p', '"+p')
 map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})
 map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<S-Tab>"', {expr = true})
 
-map('n', '<C-p>', '<cmd>Telescope find_files<cr>')
-map('n', '<C-o>', '<cmd>Telescope live_grep<cr>')
+map('n', '<C-p>', '<cmd>lua require("telescope.builtin").find_files(require("telescope.themes").get_ivy({}))<cr>')
+map('n', '<C-o>', '<cmd>lua require("telescope.builtin").live_grep(require("telescope.themes").get_ivy({}))<cr>')
 map('n', '<leader>*', ':Rg  <C-r>"<Enter>')
 
 -- nvim-compe keybinds
@@ -43,43 +43,34 @@ map('n', '<leader>f', ':NvimTreeFindFile<CR>')
 
 -- nvim LSP Keybinds
 
--- lspsaga commands
-map('n', 'gD', '<Cmd>lua require"lspsaga.provider".preview_definition()<CR>')
-map('n', 'gh', '<cmd>lua require"lspsaga.provider".lsp_finder()<CR>')
-map('n', 'gs', '<cmd>lua require"lspsaga.signaturehelp".signature_help()<CR>')
-map('n', '<F2>', '<cmd>lua require"lspsaga.rename".rename()<CR>')
-map('n', '<leader>ca', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
-map('v', '<leader>ca', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
-map('n', '<leader>cc', '<cmd>lua require("lspsaga.diagnostic").show_cursor_diagnostics()<CR>')
-map('n', '<A-t>', '<cmd>lua require"lspsaga.floaterm".open_float_terminal()<CR>')
-map('t', '<A-t>', '<cmd>lua require"lspsaga.floaterm".close_float_terminal()<CR>')
-
 -- builtin nvim-lsp(config?) commands
 -- See `:help vim.lsp.*` for documentation on any of the below functions
 map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', 'gc', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 map('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
 map('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
 
--- telescope commands
-map('n', '<leader>s', '<cmd>lua require"telescope.builtin".lsp_document_symbols()<CR>')
+-- Telescope lsp commands
+map('n', 'gD', '<Cmd>lua require"telescope.builtin".lsp_definitions(require"telescope.themes".get_cursor({}))<CR>')
+map('n', 'gr', '<cmd>lua require"telescope.builtin".lsp_references(require"telescope.themes".get_cursor({}))<CR>')
+map('n', '<leader>ca', '<cmd>lua require("telescope.builtin").lsp_code_actions(require("telescope.themes").get_cursor({}))<CR>')
+-- TODO: find range code actions map('v', '<leader>ca', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
+-- TODO: find diagnostics for current line.
+map('n', '<leader>cc', '<cmd>lua require("telescope.builtin").diagnostics(bufnr=0, require("telescope.themes").get_ivy({}))<CR>')
+
+map('n', '<leader>s', '<cmd>lua require"telescope.builtin".lsp_document_symbols(require("telescope.themes").get_ivy({}))<CR>')
 
 -- git commands via Telescope
-map('n', '<leader>gc', '<cmd>lua require("telescope.builtin").git_commits()<CR>')
-map('n', '<leader>gC', '<cmd>lua require("telescope.builtin").git_bcommits()<CR>')
-map('n', '<leader>gb', '<cmd>lua require"telescope.builtin".git_branches()<CR>')
-map('n', '<leader>gs', '<cmd>lua require"telescope.builtin".git_status()<CR>')
+map('n', '<leader>gc', '<cmd>lua require("telescope.builtin").git_commits(require("telescope.themes").get_ivy({}))<CR>')
+map('n', '<leader>gC', '<cmd>lua require("telescope.builtin").git_bcommits(require("telescope.themes").get_ivy({}))<CR>')
+map('n', '<leader>gb', '<cmd>lua require"telescope.builtin".git_branches(require("telescope.themes").get_ivy({}))<CR>')
+map('n', '<leader>gs', '<cmd>lua require"telescope.builtin".git_status(require("telescope.themes").get_ivy({}))<CR>')
 
 -- other telescope functions
-map('n', '<leader>m', '<cmd>lua require"telescope.builtin".marks()<CR>')
-map('n', '<leader>r', '<cmd>lua require"telescope.builtin".registers()<CR>')
-map('n', '<leader>vo', '<cmd>lua require"telescope.builtin".vim_options()<CR>')
-
-map('n', 'K', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>')
-map('n', '<C-f>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
-map('n', '<C-b>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
+map('n', '<leader>m', '<cmd>lua require"telescope.builtin".marks(require("telescope.themes").get_ivy({}))<CR>')
+map('n', '<leader>r', '<cmd>lua require"telescope.builtin".registers(require("telescope.themes").get_ivy({}))<CR>')
+map('n', '<leader>vo', '<cmd>lua require"telescope.builtin".vim_options(require("telescope.themes").get_ivy({}))<CR>')
 
 -- Goto previous/next diagnostic warning/error
 map('n', 'g[', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')

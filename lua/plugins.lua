@@ -1,64 +1,75 @@
 -- Plugins
 
-set['packpath'] = 'C:\\nvim'
-set['runtimepath'] = set['runtimepath'] .. ',' .. set['packpath']
-
 cmd [[packadd packer.nvim]]
 Packer = require('packer')
 
 Packer.init({
     ensure_dependencies   = true, -- Should packer install plugin dependencies?
-
-    -- Used to specify a new directory for package management.
-    package_root   = set['packpath'] .. '\\pack',
-    compile_path = set['packpath'] .. '\\plugin\\packer_compiled.vim',
 })
 
 return Packer.startup(function()
     use 'wbthomason/packer.nvim'
 
-    -- Colorscheme/Visual plugins
+    -- LSP
+    use 'neovim/nvim-lspconfig'
+    use { 'ray-x/navigator.lua', requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make' }}
+    use 'simrat39/rust-tools.nvim'
+    use 'williamboman/nvim-lsp-installer'
 
-    use 'kyazdani42/nvim-web-devicons'
+    -- Completion
+    use 'hrsh7th/nvim-cmp'
 
-    use 'marko-cerovac/material.nvim'
+    -- Syntax
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 
-    use 'hoob3rt/lualine.nvim'
-
-    use 'airblade/vim-gitgutter'
-    use 'mhinz/vim-signify'
-
+    -- Fuzzy Finder
     use {
         'nvim-telescope/telescope.nvim',
+        requires = {'nvim-lua/plenary.nvim'}
+    }
+    use {
+        'junegunn/fzf',
+        run = './install --bin',
+    }
+    use {
+        'ibhagwan/fzf-lua',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+    }
+
+    -- Color
+    use 'norcalli/nvim-colorizer.lua'
+
+    -- Colorscheme
+    use 'Shatur/neovim-ayu'
+
+    -- Utility
+    use {
+        'sudormrfbin/cheatsheet.nvim',
         requires = {
+            { 'nvim-telescope/telescope.nvim' },
             { 'nvim-lua/popup.nvim' },
             { 'nvim-lua/plenary.nvim' },
         }
     }
 
-    -- LSP Plugins
+    -- Tabline
+    use {
+        'romgrk/barbar.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+    }
 
-    use 'neovim/nvim-lspconfig'
-    use 'nvim-lua/lsp_extensions.nvim'
-    use 'ojroques/nvim-lspfuzzy'
+    -- Statusline
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    }
 
-    use 'glepnir/lspsaga.nvim'
-
-    use 'simrat39/rust-tools.nvim'
-
-    use 'ray-x/lsp_signature.nvim'
-
-    use { 'nvim-treesitter/nvim-treesitter', run = function() fn['TSUpdate']() end }
-
-    use 'hrsh7th/nvim-compe'
-
-    -- Navigation Plugins
-
-    use 'pechorin/any-jump.vim'
-    use 'kyazdani42/nvim-tree.lua'
-    use 'romgrk/barbar.nvim'
-
-    -- Formatting Plugins
-
-    use 'bfrg/vim-cpp-modern'
+    -- TODO: nvim-tree seems to not like working and causes errors with the autocommands. Fix when possible.
+    -- File Explorer
+    -- use {
+        -- 'kyazdani42/nvim-tree.lua',
+        -- requires = {
+            -- 'kyazdani42/nvim-web-devicons',
+        -- },
+    -- }
 end)
