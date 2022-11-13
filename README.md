@@ -1,3 +1,5 @@
+# Old Files. Use *nvim config*.
+
 # dotfiles
 My Neovim lua configuration files.
 
